@@ -1,128 +1,661 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-  background: #050a12;
-  color: #c8dff5;
-  font-family: 'Rajdhani', sans-serif;
-}
+  body {
+    background: #050a12;
+    color: #c8dff5;
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-/* layout */
-.container { max-width: 960px; margin: auto; padding: 20px; }
+  .grid-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+      linear-gradient(rgba(0,180,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,180,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-/* buttons */
-.btn {
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-}
-.btn-primary { background: #00d4ff; color: black; }
-.btn-outline { border: 1px solid #00d4ff; color: #00d4ff; }
+  .scan-line {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 3px;
+    background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+    animation: scan 6s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.4;
+  }
 
-/* hero */
-.hero { text-align: center; margin-top: 40px; }
-.cta-row { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+  @keyframes scan {
+    0% { top: -10px; }
+    100% { top: 100%; }
+  }
 
-/* projects */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-  gap: 20px;
-  margin-top: 40px;
-}
+  .container { position: relative; z-index: 2; max-width: 960px; margin: 0 auto; padding: 0 24px 80px; }
 
-.project-card {
-  border: 1px solid rgba(0,212,255,0.2);
-  border-radius: 10px;
-  padding: 15px;
-}
+  /* HERO */
+  .hero {
+    padding: 80px 0 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 
-.project-name { font-weight: bold; margin-bottom: 8px; }
-.project-desc { font-size: 14px; margin-bottom: 10px; }
+  .avatar-ring {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 2px solid #00d4ff;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0,212,255,0.3), inset 0 0 30px rgba(0,212,255,0.05);
+    animation: pulse-ring 3s ease-in-out infinite;
+  }
 
-.tech-pill {
-  border: 1px solid #555;
-  padding: 2px 6px;
-  font-size: 12px;
-  margin-right: 5px;
-}
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 30px rgba(0,212,255,0.3), inset 0 0 30px rgba(0,212,255,0.05); }
+    50% { box-shadow: 0 0 50px rgba(0,212,255,0.5), inset 0 0 40px rgba(0,212,255,0.1); }
+  }
 
+  .avatar-inner {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0a1f35, #0d2d4a);
+    border: 1px solid rgba(0,212,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', monospace;
+    font-size: 26px;
+    font-weight: 900;
+    color: #00d4ff;
+    letter-spacing: 2px;
+  }
+
+  .tag-line {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #00d4ff;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 900;
+    color: #e8f4ff;
+    letter-spacing: 3px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h1 span { color: #00d4ff; }
+
+  .subtitle {
+    font-size: 18px;
+    color: #7aa8c9;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 32px;
+  }
+
+  .hero-chips {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    margin-bottom: 36px;
+  }
+
+  .chip {
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: #00d4ff;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .chip:hover { background: rgba(0,212,255,0.15); border-color: rgba(0,212,255,0.5); }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+  .btn {
+    padding: 12px 28px;
+    border-radius: 4px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-primary {
+    background: #00d4ff;
+    color: #050a12;
+  }
+  .btn-primary:hover { background: #33ddff; transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid rgba(0,212,255,0.4);
+    color: #00d4ff;
+  }
+  .btn-outline:hover { background: rgba(0,212,255,0.1); border-color: #00d4ff; }
+
+  /* SECTION */
+  .section { margin-top: 70px; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .section-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    color: #00d4ff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: #e8f4ff;
+    letter-spacing: 2px;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(0,212,255,0.3), transparent);
+  }
+
+  /* STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+  }
+
+  .stat-card {
+    background: rgba(0,212,255,0.04);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 8px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .stat-card:hover { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.08); }
+
+  .stat-number {
+    font-family: 'Orbitron', monospace;
+    font-size: 28px;
+    font-weight: 900;
+    color: #00d4ff;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: #7aa8c9;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .project-card {
+    background: rgba(5,15,28,0.8);
+    border: 1px solid rgba(0,212,255,0.12);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+
+  .project-card:hover {
+    border-color: rgba(0,212,255,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,212,255,0.1);
+  }
+
+  .project-thumb {
+    height: 140px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .thumb-ar { background: linear-gradient(135deg, #0a1f35, #0d3d5a); }
+  .thumb-vr { background: linear-gradient(135deg, #1a0a35, #2d0d5a); }
+  .thumb-game { background: linear-gradient(135deg, #0a2510, #0d4020); }
+  .thumb-mr { background: linear-gradient(135deg, #35200a, #5a3a0d); }
+
+  .thumb-icon { font-size: 40px; position: relative; z-index: 2; }
+
+  .project-tag {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: rgba(0,212,255,0.15);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: #00d4ff;
+    letter-spacing: 1px;
+    font-weight: 600;
+    z-index: 3;
+  }
+
+  .project-body { padding: 18px; }
+
+  .project-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #e8f4ff;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .project-desc {
+    font-size: 14px;
+    color: #7aa8c9;
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: 14px;
+  }
+
+  .project-techs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .tech-pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: #a0c0d8;
+    letter-spacing: 0.5px;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .skill-group {
+    background: rgba(0,212,255,0.03);
+    border: 1px solid rgba(0,212,255,0.1);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .skill-group-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #00d4ff;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+
+  .skill-bar-row { margin-bottom: 12px; }
+
+  .skill-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 13px;
+    color: #b0cce0;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+
+  .skill-bar-track {
+    height: 3px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #005577, #00d4ff);
+    transition: width 1.2s ease;
+  }
+
+  /* CONTACT */
+  .contact-card {
+    background: rgba(0,212,255,0.04);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 10px;
+    padding: 36px;
+    text-align: center;
+  }
+
+  .contact-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #e8f4ff;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  .contact-sub {
+    color: #7aa8c9;
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 28px;
+  }
+
+  .contact-links {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 6px;
+    padding: 10px 20px;
+    color: #00d4ff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .contact-link:hover { background: rgba(0,212,255,0.15); border-color: rgba(0,212,255,0.5); }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 60px;
+    text-align: center;
+    font-size: 12px;
+    color: #3a5a72;
+    letter-spacing: 2px;
+    padding-bottom: 20px;
+  }
+
+  /* CORNER ACCENT */
+  .section::before {
+    content: '';
+    display: block;
+  }
 </style>
 </head>
-
 <body>
+<div class="grid-bg"></div>
+<div class="scan-line"></div>
 
 <div class="container">
 
-<!-- HERO -->
-<div class="hero">
-  <h1>Madhu Vanthi</h1>
-  <p>Unity Developer | XR / AR / VR</p>
-
-  <div class="cta-row">
-    <a href="#projects" class="btn btn-primary">View Projects</a>
-    <a href="#contact" class="btn btn-outline">Contact</a>
-
-    <!-- RESUME BUTTON -->
-    <a href="https://drive.google.com/file/d/1R9Dxra7mgFXvNfFNNZ1xA-Kkx_3mTOG_/view?usp=drive_link" target="_blank" class="btn btn-primary">
-      📄 Resume
-    </a>
-  </div>
-</div>
-
-<!-- PROJECTS -->
-<div id="projects" class="projects-grid">
-
-  <!-- Project Nexus (UPDATED) -->
-  <div class="project-card">
-    <div class="project-name">Project Nexus (3D Runner)</div>
-
-    <div class="project-desc">
-      Fast-paced 3D runner built in Unity with obstacle avoidance, smooth controls,
-      and score-based progression. WebGL optimized.
+  <!-- HERO -->
+  <div class="hero">
+    <div class="avatar-ring">
+      <div class="avatar-inner">XR</div>
     </div>
-
-    <div>
-      <span class="tech-pill">Unity</span>
-      <span class="tech-pill">C#</span>
-      <span class="tech-pill">WebGL</span>
+    <div class="tag-line">Unity Developer · XR/AR/VR · Game Design</div>
+    <h1>Madhu<span>Vanthi</span></h1>
+    <div class="subtitle">Building immersive realities with Unity</div>
+    <div class="hero-chips">
+      <span class="chip">Unity</span>
+      <span class="chip">XR / AR / VR</span>
+      <span class="chip">C#</span>
+      <span class="chip">Mixed Reality</span>
+      <span class="chip">Game Design</span>
+      <span class="chip">3D Development</span>
     </div>
-
-    <div style="margin-top:10px;">
-      <a href="https://madhuvanthideepak.github.io/3dRunner/" target="_blank" class="btn btn-primary">
-        ▶ Play Game
-      </a>
-
-      <a href="https://github.com/MadhuVanthiDeepak" target="_blank" class="btn btn-outline">
-        View Code
-      </a>
+    <div class="cta-row">
+      <button class="btn btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View Projects</button>
+      <button class="btn btn-outline" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get in Touch</button>
     </div>
   </div>
 
-</div>
-
-<!-- CONTACT -->
-<div id="contact" style="margin-top:50px; text-align:center;">
-  <h2>Contact</h2>
-  <p>Email: madhu.s.saminathan@gmail.com</p>
-
-  <div style="margin-top:10px;">
-    <a href="https://www.linkedin.com/in/madhu-vanthi-8932673a3/" target="_blank" class="btn btn-outline">LinkedIn</a>
-    <a href="https://github.com/MadhuVanthiDeepak" target="_blank" class="btn btn-outline">GitHub</a>
+  <!-- STATS -->
+  <div class="section">
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-number" id="s1">0</span>
+        <span class="stat-label">XR Projects</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="s2">0</span>
+        <span class="stat-label">Games Built</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="s3">0</span>
+        <span class="stat-label">Years in Unity</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="s4">0</span>
+        <span class="stat-label">Platforms</span>
+      </div>
+    </div>
   </div>
-</div>
+
+  <!-- PROJECTS -->
+  <div class="section" id="projects">
+    <div class="section-header">
+      <span class="section-label">02</span>
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="divider-line"></div>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-thumb thumb-ar">
+          <span class="thumb-icon">🥽</span>
+          <span class="project-tag">AR</span>
+        </div>
+        <div class="project-body">
+          <div class="project-name">AR Spatial Navigator</div>
+          <div class="project-desc">Real-world overlay system for wayfinding using ARCore & ARKit with marker-based and markerless tracking.</div>
+          <div class="project-techs">
+            <span class="tech-pill">ARCore</span>
+            <span class="tech-pill">ARKit</span>
+            <span class="tech-pill">Unity XR</span>
+            <span class="tech-pill">C#</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb thumb-vr">
+          <span class="thumb-icon">🌐</span>
+          <span class="project-tag">VR</span>
+        </div>
+        <div class="project-body">
+          <div class="project-name">VR Training Sim</div>
+          <div class="project-desc">Immersive training environment with physics-based interaction and real-time performance analytics.</div>
+          <div class="project-techs">
+            <span class="tech-pill">Oculus SDK</span>
+            <span class="tech-pill">VRTK</span>
+            <span class="tech-pill">XR Interaction</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb thumb-game">
+          <span class="thumb-icon">🎮</span>
+          <span class="project-tag">GAME</span>
+        </div>
+        <div class="project-body">
+          <div class="project-name">Project Nexus</div>
+          <div class="project-desc">Third-person action RPG with procedural level generation, custom AI behavior trees, and dynamic lighting.</div>
+          <div class="project-techs">
+            <span class="tech-pill">Unity URP</span>
+            <span class="tech-pill">NavMesh</span>
+            <span class="tech-pill">Shader Graph</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb thumb-mr">
+          <span class="thumb-icon">✨</span>
+          <span class="project-tag">MR</span>
+        </div>
+        <div class="project-body">
+          <div class="project-name">Mixed Reality Workspace</div>
+          <div class="project-desc">Spatial computing app for Microsoft HoloLens 2 enabling collaborative 3D model inspection in real space.</div>
+          <div class="project-techs">
+            <span class="tech-pill">HoloLens 2</span>
+            <span class="tech-pill">MRTK</span>
+            <span class="tech-pill">Azure Spatial</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section" id="skills">
+    <div class="section-header">
+      <span class="section-label">03</span>
+      <h2 class="section-title">Tech Stack</h2>
+      <div class="divider-line"></div>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-group">
+        <div class="skill-group-title">XR / AR / VR</div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>ARCore / ARKit</span><span>90%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90%" style="width:0"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>OpenXR / VRTK</span><span>85%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85%" style="width:0"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>HoloLens / MRTK</span><span>80%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="80%" style="width:0"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Unity & Dev</div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>Unity (URP/HDRP)</span><span>95%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="95%" style="width:0"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>C# / Scripting</span><span>90%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90%" style="width:0"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>Shader Graph</span><span>75%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="75%" style="width:0"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Game Systems</div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>AI & NavMesh</span><span>82%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="82%" style="width:0"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>Physics & Animation</span><span>88%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="88%" style="width:0"></div></div>
+        </div>
+        <div class="skill-bar-row">
+          <div class="skill-bar-label"><span>UI/UX (Unity UI)</span><span>85%</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85%" style="width:0"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section" id="contact">
+    <div class="section-header">
+      <span class="section-label">04</span>
+      <h2 class="section-title">Connect</h2>
+      <div class="divider-line"></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-title">Let's Build Something Real</div>
+      <div class="contact-sub">Open to XR developer roles, game projects, and immersive experience collabs.</div>
+      <div class="contact-links">
+     <a class="contact-link" href="mailto:madhu.s.saminathan@gmail.com">✉ Email Me</a>
+     <a class="contact-link" href="https://www.linkedin.com/in/madhu-vanthi-8932673a3/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="contact-link" href="https://www.linkedin.com/in/madhu-vanthi-8932673a3/">in LinkedIn</a>
+        <a class="contact-link" href="https://github.com/MadhuVanthiDeepak">⌥ GitHub</a>
+        <a class="contact-link" href="https://mathi0806.itch.io/">▶ Itch.io</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    &lt;/PORTFOLIO&gt; · Built for the immersive frontier
+  </div>
 
 </div>
 
+<script>
+  // Counter animation
+  function animCount(el, target, suffix) {
+    let start = 0;
+    const step = Math.ceil(target / 30);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { el.textContent = target + (suffix||''); clearInterval(timer); }
+      else el.textContent = start + (suffix||'');
+    }, 40);
+  }
+
+  setTimeout(() => {
+    animCount(document.getElementById('s1'), 12);
+    animCount(document.getElementById('s2'), 8);
+    animCount(document.getElementById('s3'), 4, '+');
+    animCount(document.getElementById('s4'), 6);
+  }, 400);
+
+  // Skill bars animate on load
+  setTimeout(() => {
+    document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.w;
+    });
+  }, 600);
+</script>
 </body>
 </html>
